@@ -9,14 +9,13 @@ A complete monitoring stack for Kubernetes clusters using Prometheus and Grafana
 
 
 ## 🚀 Features
-✅ Prometheus for metrics scraping and storage
-✅ Grafana for rich dashboards and visualization
-✅ Traefik Ingress Controller (or NGINX) for routing
-✅ Automatic HTTPS with cert-manager + Let’s Encrypt
-✅ Namespace isolation (`monitoring`)
+✅ Prometheus for metrics scraping and storage<br>
+✅ Grafana for rich dashboards and visualization<br>
+✅ Traefik Ingress Controller (or NGINX) for routing<br>
+✅ Automatic HTTPS with cert-manager + Let’s Encrypt<br>
+✅ Namespace isolation (`monitoring`)<br>
 ✅ One-command deployment via `deploy.sh`
 
-## ⚙️ Requirements
 ## ⚙️ Requirements
 
 | Component | Description |
