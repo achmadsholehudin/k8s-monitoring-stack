@@ -109,33 +109,21 @@ echo "custom-values.yaml" >> .gitignore
 ⚠️ Note: `custom-values.yaml` is ignored from Git tracking to protect sensitive data (like admin passwords).
 Then, edit the file according to your environment:
 ```
-# ------------------------------
-# Namespace configuration
-# ------------------------------
 namespace:
-  name: monitoring        # Kubernetes namespace where all components will be deployed
+  name: monitoring                      # Kubernetes namespace where all components will be deployed
 
-# ------------------------------
-# Domain & ingress settings
-# ------------------------------
 site:
-  domain: "monitor.example.com"  # Public domain for accessing Grafana via HTTPS
+  domain: "monitor.example.com"         # Public domain for accessing Grafana via HTTPS
 
 ingress:
-  className: "traefik"           # Ingress class (e.g., "traefik" or "nginx")
+  className: "traefik"                  # Ingress class (e.g., "traefik" or "nginx")
 
-# ------------------------------
-# cert-manager configuration
-# ------------------------------
 certManager:
   clusterIssuer: "letsencrypt-staging"   # Use "letsencrypt-prod" for production
   email: "admin@example.com"             # Email used for Let's Encrypt notifications
 
-# ------------------------------
-# PostgreSQL configuration (for Grafana DB)
-# ------------------------------
 postgres:
-  enabled: true               # Enable or disable PostgreSQL deployment
+  enabled: true                 # Enable or disable PostgreSQL deployment
   service:
     name: "grafana-postgresql"  # Service name used by Grafana to connect to PostgreSQL
     port: 5432                  # Default PostgreSQL port
@@ -144,9 +132,6 @@ postgres:
     user: "grafana"             # Database username
     password: "password"        # ⚠️ Change this before deploying (will be stored as a Secret)
 
-# ------------------------------
-# Persistent storage configuration
-# ------------------------------
 storage:
   className: ""           # Leave empty to use cluster’s default StorageClass
   prometheus:
@@ -156,40 +141,28 @@ storage:
   postgres:
     size: "5Gi"           # Persistent volume size for PostgreSQL data
 
-# ------------------------------
-# Grafana administrator account
-# ------------------------------
 grafana:
-  adminUser: "admin"       # Default Grafana admin username
-  adminPassword: "changeme" # ⚠️ Change this password before deploying
+  adminUser: "admin"            # Default Grafana admin username
+  adminPassword: "changeme"     # ⚠️ Change this password before deploying
 
-# ------------------------------
-# Container image versions
-# ------------------------------
 images:
   prometheus: "prom/prometheus:v2.55.0"   # Prometheus container image
   grafana: "grafana/grafana:11.2.0"       # Grafana container image
   postgres: "postgres:16-alpine"          # PostgreSQL container image
 
-# ------------------------------
-# Replica counts
-# ------------------------------
 replicas:
   prometheus: 1            # Prometheus replicas (recommended 1–3 for HA)
   grafana: 1               # Grafana replicas
   postgres: 1              # PostgreSQL replicas (StatefulSet manages persistence)
 
-# ------------------------------
-# Horizontal Pod Autoscaling
-# ------------------------------
 autoscaling:
   enabled: true             # Enable HPA for Prometheus and Grafana
 
   prometheus:
-    minReplicas: 1          # Minimum number of replicas
-    maxReplicas: 3          # Maximum number of replicas
-    targetCPUUtilizationPercentage: 70    # Target CPU utilization threshold
-    targetMemoryUtilizationPercentage: 80 # Target Memory utilization threshold
+    minReplicas: 1                          # Minimum number of replicas
+    maxReplicas: 3                          # Maximum number of replicas
+    targetCPUUtilizationPercentage: 70      # Target CPU utilization threshold
+    targetMemoryUtilizationPercentage: 80   # Target Memory utilization threshold
 
   grafana:
     minReplicas: 1
