@@ -29,6 +29,8 @@ A complete monitoring stack for Kubernetes clusters using Prometheus and Grafana
 
 
 ## 📁 Directory Structure
+
+```bash
 monitoring/
 ├── custom-values.yaml
 ├── deploy.sh
@@ -54,6 +56,7 @@ monitoring/
         ├── tls-staging.yaml
         ├── tls-prod.yaml
         └── certificate.yaml
+```
 
 ## 🔐 Installing cert-manager (Required)
 Before deploying the monitoring stack, you must install cert-manager with its CRDs,
