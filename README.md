@@ -78,7 +78,9 @@ Create your own `custom-values.yaml` file in the project root directory.<br>
 You can start by copying the example template:
 ```
 cp custom-values.yaml.example custom-values.yaml
+echo "custom-values.yaml" >> .gitignore
 ```
+⚠️ Note: `custom-values.yaml` is ignored from Git tracking to protect sensitive data (like admin passwords).
 Then, edit the file according to your environment:
 ```
 namespace:
