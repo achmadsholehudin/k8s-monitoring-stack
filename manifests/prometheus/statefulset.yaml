@@ -1,12 +1,14 @@
 apiVersion: apps/v1
-kind: Deployment
+kind: StatefulSet
 metadata:
   name: prometheus
   namespace: ${NAMESPACE}
   labels:
     app: prometheus
 spec:
-  replicas: ${REPLICA_PROMETHEUS}   # <— no quotes
+  serviceName: prometheus-headless
+  replicas: ${REPLICA_PROMETHEUS}
+  podManagementPolicy: Parallel
   selector:
     matchLabels:
       app: prometheus
@@ -18,30 +20,36 @@ spec:
       serviceAccountName: prometheus
       containers:
         - name: prometheus
-          image: "${IMAGE_PROMETHEUS}"
+          image: ${IMAGE_PROMETHEUS}
           args:
             - "--config.file=/etc/prometheus/prometheus.yml"
             - "--storage.tsdb.path=/prometheus"
             - "--web.enable-lifecycle"
           ports:
-            - containerPort: 9090
-              name: http
+            - name: http
+              containerPort: 9090
           resources:
             requests:
-              cpu: "250m"
-              memory: "512Mi"
+              cpu: "200m"
+              memory: "1Gi"
             limits:
               cpu: "1"
               memory: "4Gi"
           volumeMounts:
             - name: config
-              mountPath: /etc/prometheus/
+              mountPath: /etc/prometheus
             - name: data
               mountPath: /prometheus
       volumes:
         - name: config
           configMap:
             name: prometheus-config
-        - name: data
-          persistentVolumeClaim:
-            claimName: prometheus-data
+  volumeClaimTemplates:
+    - metadata:
+        name: data
+      spec:
+        accessModes: ["ReadWriteOnce"]
+        storageClassName: ${STORAGE_CLASS}
+        resources:
+          requests:
+            storage: ${PROMETHEUS_SIZE}

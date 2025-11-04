@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: ${PG_SVC_NAME}
+  namespace: ${NAMESPACE}
+  labels:
+    app: grafana-postgresql
+spec:
+  type: ClusterIP
+  ports:
+    - name: postgres
+      port: ${PG_PORT}
+      targetPort: 5432
+  selector:
+    app: grafana-postgresql

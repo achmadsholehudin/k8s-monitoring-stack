@@ -1,0 +1,68 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: grafana-postgresql
+  namespace: ${NAMESPACE}
+  labels:
+    app: grafana-postgresql
+spec:
+  serviceName: ${PG_SVC_NAME}
+  replicas: 1
+  selector:
+    matchLabels:
+      app: grafana-postgresql
+  podManagementPolicy: Parallel
+  template:
+    metadata:
+      labels:
+        app: grafana-postgresql
+    spec:
+      containers:
+        - name: postgres
+          image: ${IMAGE_POSTGRES}
+          ports:
+            - name: postgres
+              containerPort: 5432
+          env:
+            - name: POSTGRES_DB
+              value: ${PG_DB}
+            - name: POSTGRES_USER
+              valueFrom:
+                secretKeyRef:
+                  name: grafana-db
+                  key: username
+            - name: POSTGRES_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: grafana-db
+                  key: password
+          volumeMounts:
+            - name: data
+              mountPath: /var/lib/postgresql/data
+              subPath: data
+          resources:
+            requests:
+              cpu: "100m"
+              memory: "256Mi"
+            limits:
+              cpu: "500m"
+              memory: "1Gi"
+          readinessProbe:
+            exec:
+              command: ["pg_isready","-U","postgres"]
+            initialDelaySeconds: 10
+            periodSeconds: 10
+          livenessProbe:
+            tcpSocket:
+              port: 5432
+            initialDelaySeconds: 20
+            periodSeconds: 15
+  volumeClaimTemplates:
+    - metadata:
+        name: data
+      spec:
+        accessModes: ["ReadWriteOnce"]
+        storageClassName: ${STORAGE_CLASS}
+        resources:
+          requests:
+            storage: ${POSTGRES_SIZE}

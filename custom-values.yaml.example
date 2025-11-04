@@ -1,23 +1,61 @@
+
 namespace:
-  name: monitoring
+  name: monitoring        # Kubernetes namespace where all components will be deployed
 
 site:
-  domain: "monitor.your-domain.com"
+  domain: "monitor.example.com"  # Public domain for accessing Grafana via HTTPS
 
 ingress:
-  className: "traefik"  # or "nginx" if using ingress-nginx
+  className: "traefik"           # Ingress class (e.g., "traefik" or "nginx")
 
 certManager:
-  clusterIssuer: "letsencrypt-prod"  # use "letsencrypt-staging" for testing
-  email: "admin@your-domain.com"
+  clusterIssuer: "letsencrypt-staging"   # Use "letsencrypt-prod" for production
+  email: "admin@example.com"             # Email used for Let's Encrypt notifications
+
+postgres:
+  enabled: true               # Enable or disable PostgreSQL deployment
+  service:
+    name: "grafana-postgresql"  # Service name used by Grafana to connect to PostgreSQL
+    port: 5432                  # Default PostgreSQL port
+  auth:
+    dbName: "grafana"           # Database name used by Grafana
+    user: "grafana"             # Database username
+    password: "password"        # ⚠️ Change this before deploying (will be stored as a Secret)
 
 storage:
-  className: ""          # leave empty to use default StorageClass
+  className: ""           # Leave empty to use cluster’s default StorageClass
   prometheus:
-    size: "20Gi"
+    size: "20Gi"          # Persistent volume size for Prometheus data
   grafana:
-    size: "5Gi"
+    size: "5Gi"           # Persistent volume size for Grafana data
+  postgres:
+    size: "5Gi"           # Persistent volume size for PostgreSQL data
 
 grafana:
-  adminUser: "admin"
-  adminPassword: "changeme"
+  adminUser: "admin"       # Default Grafana admin username
+  adminPassword: "changeme" # ⚠️ Change this password before deploying
+
+images:
+  prometheus: "prom/prometheus:v2.55.0"   # Prometheus container image
+  grafana: "grafana/grafana:11.2.0"       # Grafana container image
+  postgres: "postgres:16-alpine"          # PostgreSQL container image
+
+replicas:
+  prometheus: 1            # Prometheus replicas (recommended 1–3 for HA)
+  grafana: 1               # Grafana replicas
+  postgres: 1              # PostgreSQL replicas (StatefulSet manages persistence)
+-
+autoscaling:
+  enabled: true             # Enable HPA for Prometheus and Grafana
+
+  prometheus:
+    minReplicas: 1          # Minimum number of replicas
+    maxReplicas: 3          # Maximum number of replicas
+    targetCPUUtilizationPercentage: 70    # Target CPU utilization threshold
+    targetMemoryUtilizationPercentage: 80 # Target Memory utilization threshold
+
+  grafana:
+    minReplicas: 1
+    maxReplicas: 3
+    targetCPUUtilizationPercentage: 70
+    targetMemoryUtilizationPercentage: 80
