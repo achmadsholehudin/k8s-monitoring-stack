@@ -1,0 +1,16 @@
+# Kubernetes / Helm / Config
+*.log
+*.tmp
+*.bak
+*.swp
+*.orig
+.env
+.env.*
+
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+
+__pycache__/
+*.pyc
