@@ -36,7 +36,6 @@ A complete production-ready monitoring stack for Kubernetes clusters using **Pro
 ```bash
 monitoring/
 ├── custom-values.yaml
-├── custom-values.yaml.example
 ├── deploy.sh
 ├── LICENSE
 ├── load-env.sh
