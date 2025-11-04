@@ -1,4 +1,5 @@
 # Kubernetes / Helm / Config
+custom-values.yaml
 *.log
 *.tmp
 *.bak

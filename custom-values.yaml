@@ -6,7 +6,7 @@ namespace:
 
 # Site domain (used by Grafana Ingress)
 site:
-  domain: "monitor.your-domain.com"
+  domain: "monitor.k8s.didinmediagroup.com"
 
 # Ingress class to use (examples: traefik or nginx)
 ingress:
@@ -17,7 +17,7 @@ certManager:
   # Use "letsencrypt-staging" for testing or "letsencrypt-prod" for production
   clusterIssuer: "letsencrypt-prod"
   # Email address used for Let's Encrypt registration and notifications
-  email: "admin@your-domain.com"
+  email: "admin@didinmediagroup.com"
 
 # Persistent storage configuration
 storage:

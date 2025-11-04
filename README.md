@@ -74,6 +74,12 @@ kubectl -n cert-manager get pods
 ```
 
 ## ⚙️ Configuration — `custom-values.yaml`
+Create your own `custom-values.yaml` file in the project root directory.<br>
+You can start by copying the example template:
+```
+cp custom-values.yaml.example custom-values.yaml
+```
+Then, edit the file according to your environment:
 ```
 namespace:
   name: monitoring

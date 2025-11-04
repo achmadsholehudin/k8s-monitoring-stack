@@ -1,0 +1,23 @@
+namespace:
+  name: monitoring
+
+site:
+  domain: "monitor.your-domain.com"
+
+ingress:
+  className: "traefik"  # or "nginx" if using ingress-nginx
+
+certManager:
+  clusterIssuer: "letsencrypt-prod"  # use "letsencrypt-staging" for testing
+  email: "admin@your-domain.com"
+
+storage:
+  className: ""          # leave empty to use default StorageClass
+  prometheus:
+    size: "20Gi"
+  grafana:
+    size: "5Gi"
+
+grafana:
+  adminUser: "admin"
+  adminPassword: "changeme"
