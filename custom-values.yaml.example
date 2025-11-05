@@ -44,7 +44,7 @@ replicas:
   prometheus: 1            # Prometheus replicas (recommended 1–3 for HA)
   grafana: 1               # Grafana replicas
   postgres: 1              # PostgreSQL replicas (StatefulSet manages persistence)
--
+
 autoscaling:
   enabled: true             # Enable HPA for Prometheus and Grafana
 
